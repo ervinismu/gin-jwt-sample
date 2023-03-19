@@ -26,19 +26,24 @@ func init() {
 }
 
 func main() {
-
 	r := gin.New()
+	// Logging for formatting req log using json
+	r.Use(middlewares.LoggingMiddleware())
+	// Recovery returns a middleware that recover
+	// from any panic and writes 500 if there was one
+	r.Use(gin.Recovery())
 	r.GET("/ping", func(c *gin.Context) {
 	  c.JSON(http.StatusOK, gin.H{
 		"message": "pong",
 	  })
 	})
 
-	r.Use(middlewares.LoggingMiddleware())
+
 
 	r.POST("/signup", controllers.Signup)
 	r.POST("/signin", controllers.Signin)
 
+	// Protect with auth
 	r.Use(middlewares.AuthMiddleware())
 
 	r.GET("/me", controllers.MyProfile)
