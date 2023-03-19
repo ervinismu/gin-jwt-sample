@@ -1,7 +1,13 @@
 package initializers
 
-import "github.com/ervinismu/gin-jwt-sample/models"
+import (
+	"github.com/ervinismu/gin-jwt-sample/models"
+	log "github.com/sirupsen/logrus"
+)
 
 func SyncDB() {
-	DB.AutoMigrate(&models.User{})
+	err := DB.AutoMigrate(&models.User{})
+	if err != nil {
+		log.Error("Cannot migrate database")
+	}
 }

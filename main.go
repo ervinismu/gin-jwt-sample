@@ -38,8 +38,6 @@ func main() {
 	  })
 	})
 
-
-
 	r.POST("/signup", controllers.Signup)
 	r.POST("/signin", controllers.Signin)
 
@@ -47,5 +45,8 @@ func main() {
 	r.Use(middlewares.AuthMiddleware())
 
 	r.GET("/me", controllers.MyProfile)
-	r.Run()
+	err := r.Run()
+	if err != nil {
+		log.Panic("Cannot start app.")
+	}
 }
